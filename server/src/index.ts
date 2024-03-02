@@ -1,7 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import redisClient from "./redis/redisClient";
+import redisClient from "./database/redis/redisClient";
+import { connectMongoDB } from "./database/mongodb/mongoClient";
 
 dotenv.config();
 
@@ -16,10 +17,11 @@ app.get("/", (req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
-  redisClient
-    .connect()
-    .then(() => {
-      console.log("Successfully Connected");
-    })
-    .catch((err) => console.log("Error in Connecting", err));
+  connectMongoDB();
+  // redisClient
+  //   .connect()
+  //   .then(() => {
+  //     console.log("Successfully Connected");
+  //   })
+  //   .catch((err) => console.log("Error in Connecting", err));
 });
