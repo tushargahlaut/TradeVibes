@@ -4,17 +4,15 @@ import { IComment, IPost } from "../../../interfaces/post.interface";
 const commentSchema = new Schema<IComment>({
   text: { type: String, required: true },
   posted_by: { type: String, required: true },
-  isDeleted: { type: Boolean, default: false },
 });
 
 const postSchema = new Schema<IPost>({
   heading: { type: String, required: true },
   description: { type: String, required: true },
-  image_url: { type: String }, // You can add other validations or configurations as needed
+  image_url: { type: String },
   comments: [commentSchema],
   likes: { type: Number, default: 0 },
   posted_by: { type: String, required: true },
-  isDeleted: { type: Boolean, default: false },
 });
 
 export const PostModel = model<IPost>("Post", postSchema);

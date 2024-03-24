@@ -23,6 +23,9 @@ export const BasicSignupService = async (
     const { name, email } = basicSignupData;
     return { name, email };
   } catch (error: any) {
+    if (error?.message === "email should be unique") {
+      throw new Error("email should be unique");
+    }
     console.log("Error in Basic Signup Service", error);
     throw new Error("Error in Basic Signup Service" + error.message);
   }
@@ -31,6 +34,9 @@ export const BasicSignupService = async (
 export const BasicLoginService = async (payload: Payload): Promise<any> => {
   try {
     const userDetails = await BasicLoginDAL(payload.email);
+    if (userDetails === null) {
+      throw new Error("user doesn't exists");
+    }
     const verifyPassword =
       userDetails?.password &&
       VerifyPassword(payload.password, userDetails?.password);
@@ -41,6 +47,6 @@ export const BasicLoginService = async (payload: Payload): Promise<any> => {
     return { name, email };
   } catch (error: any) {
     console.log("Error in BasicLoginService", error);
-    throw new Error("Error in BasicLoginService" + error?.message);
+    throw new Error(error?.message);
   }
 };

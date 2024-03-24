@@ -4,7 +4,6 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password?: string;
-  isDeleted: false;
 }
 
 export interface IBasicUserInput {

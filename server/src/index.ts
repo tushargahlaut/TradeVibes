@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-app.use("/api/auth", AuthRouter);
+app.use("/api/v1/auth", AuthRouter);
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });

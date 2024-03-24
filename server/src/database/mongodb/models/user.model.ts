@@ -15,9 +15,7 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       required: true,
-      minLength: process.env.NODE_ENV === "production" ? 6 : 3,
     },
-    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

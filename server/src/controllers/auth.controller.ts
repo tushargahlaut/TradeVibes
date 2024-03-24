@@ -40,6 +40,12 @@ export const BasicLoginController = async (
         message: "Incorrect Password, Please Try Again",
       });
     }
+    if (error.message === "user doesn't exists") {
+      return res.status(404).json({
+        success: false,
+        message: "User Doesn't Exists, Please Register",
+      });
+    }
     return res.status(500).json({
       success: false,
       message: "Something went wrong, try again later",
@@ -59,13 +65,13 @@ export const BasicSignupController = async (
         message: "Name, Email, Password is Missing",
       });
     }
-    if (validateName(name)) {
+    if (!validateName(name)) {
       return res.status(400).json({
         success: false,
         message: "Improper Validation for Name",
       });
     }
-    if (validateEmail(email)) {
+    if (!validateEmail(email)) {
       return res.status(400).json({
         success: false,
         message: "Improper Validation for Email",
@@ -83,7 +89,13 @@ export const BasicSignupController = async (
       token: jwtToken,
       data: basicSignUpUser,
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.message === "email should be unique") {
+      return res.status(409).json({
+        success: false,
+        message: "A User is already registered with this email",
+      });
+    }
     console.log("Error in Basic Signup Controller", error);
     return res.status(500).json({
       success: false,
