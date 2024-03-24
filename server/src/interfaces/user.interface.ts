@@ -4,4 +4,13 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password?: string;
+  isDeleted: false;
 }
+
+export interface IBasicUserInput {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface IBasicUserOutput extends Omit<IBasicUserInput, "password"> {}

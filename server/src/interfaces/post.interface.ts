@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 export interface IComment extends Document {
   text: string;
   posted_by: string;
+  isDeleted: boolean;
 }
 
 export interface IPost extends Document {
@@ -12,4 +13,5 @@ export interface IPost extends Document {
   comments: IComment[];
   likes: number;
   posted_by: string;
+  isDeleted: boolean;
 }

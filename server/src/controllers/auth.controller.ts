@@ -1,0 +1,93 @@
+import { Request, Response } from "express";
+import { validateEmail, validateName } from "../utils/formvalidator.utils";
+import {
+  BasicLoginService,
+  BasicSignupService,
+} from "../services/auth.service";
+import { IBasicUserOutput } from "../interfaces/user.interface";
+import { GenerateJWTToken } from "../utils/jwt.utils";
+
+export const BasicLoginController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is Missing or Invalid",
+      });
+    }
+    if (!password) {
+      return res.status(400).json({
+        success: false,
+        message: "Password is Missing",
+      });
+    }
+    const getUserDetails = await BasicLoginService({ email, password });
+    const token = GenerateJWTToken(getUserDetails);
+    return res.status(200).json({
+      success: true,
+      data: getUserDetails,
+      token,
+    });
+  } catch (error: any) {
+    console.log("Error in Basic Login Controller", error);
+    if (error.message === "Incorrect Password") {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect Password, Please Try Again",
+      });
+    }
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong, try again later",
+    });
+  }
+};
+
+export const BasicSignupController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, Email, Password is Missing",
+      });
+    }
+    if (validateName(name)) {
+      return res.status(400).json({
+        success: false,
+        message: "Improper Validation for Name",
+      });
+    }
+    if (validateEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Improper Validation for Email",
+      });
+    }
+    const basicSignUpUser: IBasicUserOutput = await BasicSignupService({
+      name,
+      email,
+      password,
+    });
+    const jwtToken = GenerateJWTToken(basicSignUpUser);
+
+    return res.status(200).json({
+      success: true,
+      token: jwtToken,
+      data: basicSignUpUser,
+    });
+  } catch (error) {
+    console.log("Error in Basic Signup Controller", error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong, try again later",
+    });
+  }
+};
