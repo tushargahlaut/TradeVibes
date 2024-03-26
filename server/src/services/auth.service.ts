@@ -7,6 +7,7 @@ import {
   IBasicUserOutput,
 } from "../interfaces/user.interface";
 import { HashPassword, VerifyPassword } from "../utils/bcrypt.utils";
+import { encryptString } from "../utils/crypto.util";
 
 interface Payload {
   email: string;
@@ -31,7 +32,7 @@ export const BasicSignupService = async (
   }
 };
 
-export const BasicLoginService = async (payload: Payload): Promise<any> => {
+export const BasicLoginService = async (payload: Payload) => {
   try {
     const userDetails = await BasicLoginDAL(payload.email);
     if (userDetails === null) {
@@ -43,8 +44,9 @@ export const BasicLoginService = async (payload: Payload): Promise<any> => {
     if (!verifyPassword) {
       throw new Error("Incorrect Password");
     }
-    const { name, email } = userDetails;
-    return { name, email };
+    const { name, email, _id } = userDetails;
+    const encrypted_id = encryptString(_id.toString());
+    return { name, email, encrypted_id };
   } catch (error: any) {
     console.log("Error in BasicLoginService", error);
     throw new Error(error?.message);

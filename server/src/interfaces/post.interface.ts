@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import { IUser } from "./user.interface";
 
 export interface IComment extends Document {
   text: string;
@@ -11,5 +12,5 @@ export interface IPost extends Document {
   image_url?: string; //Better to store full image name here.
   comments: IComment[];
   likes: number;
-  posted_by: string;
+  posted_by: IUser;
 }

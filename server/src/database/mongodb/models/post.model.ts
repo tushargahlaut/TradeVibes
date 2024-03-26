@@ -10,9 +10,9 @@ const postSchema = new Schema<IPost>({
   heading: { type: String, required: true },
   description: { type: String, required: true },
   image_url: { type: String },
-  comments: [commentSchema],
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   likes: { type: Number, default: 0 },
-  posted_by: { type: String, required: true },
+  posted_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 export const PostModel = model<IPost>("Post", postSchema);

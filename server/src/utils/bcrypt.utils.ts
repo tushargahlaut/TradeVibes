@@ -1,5 +1,4 @@
 import * as bcrypt from "bcrypt";
-import * as dotenv from "dotenv";
 
 export const HashPassword = async (password: string): Promise<string> => {
   try {
