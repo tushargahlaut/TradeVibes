@@ -5,6 +5,7 @@ A Stock Market Forum
 Todo:
 
 - Users CRUD -> Needs Auth like Google SSO, Id Pass Login etc.
+- Basic Auth for User [Login, Register] is done
 - Functionality for Creating Posts, Comments.
-- Implement Scrapping for NIFTY Chart.
-- Learn Bucket Storage for Image, might also need image compression.
+- Implement Scrapping for NIFTY Chart, Need to cache their data through redis.
+- Learn Bucket Storage for Image, Need to write APIs for Cloudinary, Researching Image Compression.
