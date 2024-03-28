@@ -21,8 +21,9 @@ export const BasicSignupService = async (
     const hashedPassword = await HashPassword(payload.password);
     payload.password = hashedPassword;
     const basicSignupData = await BasicSignupDAL(payload);
-    const { name, email } = basicSignupData;
-    return { name, email };
+    const { name, email, _id } = basicSignupData;
+    const user_id = encryptString(_id.toString());
+    return { name, email, user_id };
   } catch (error: any) {
     if (error?.message === "email should be unique") {
       throw new Error("email should be unique");
@@ -45,8 +46,8 @@ export const BasicLoginService = async (payload: Payload) => {
       throw new Error("Incorrect Password");
     }
     const { name, email, _id } = userDetails;
-    const encrypted_id = encryptString(_id.toString());
-    return { name, email, encrypted_id };
+    const user_id = encryptString(_id.toString());
+    return { name, email, user_id };
   } catch (error: any) {
     console.log("Error in BasicLoginService", error);
     throw new Error(error?.message);

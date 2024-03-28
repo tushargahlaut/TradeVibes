@@ -1,6 +1,7 @@
 import { IBasicUserInput, IUser } from "../../../interfaces/user.interface";
 import { UserModel } from "../models/user.model";
 
+//Contains Both Auth (Signup and Login) and User CRUD
 export const BasicSignupDAL = async (
   payload: IBasicUserInput
 ): Promise<IUser> => {
@@ -23,7 +24,6 @@ export const BasicLoginDAL = async (payload: string): Promise<IUser | null> => {
   try {
     const getUser = await UserModel.findOne({
       email: payload,
-      isDeleted: false,
     });
     if (!getUser) return null;
     return getUser;

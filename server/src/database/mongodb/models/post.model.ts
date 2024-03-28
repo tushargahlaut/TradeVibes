@@ -16,3 +16,4 @@ const postSchema = new Schema<IPost>({
 });
 
 export const PostModel = model<IPost>("Post", postSchema);
+export const CommentModel = model<IComment>("Comment", commentSchema);
