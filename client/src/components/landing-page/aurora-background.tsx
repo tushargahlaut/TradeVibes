@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { AuroraBackground } from "../ui/aurora-background";
+import { JoinDialog } from "./join-dialog";
 
 export function LandingPage() {
   return (
@@ -18,11 +19,9 @@ export function LandingPage() {
           Trade Vibes
         </div>
         <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
-          Cultivating Profitable Discussions
+          Cultivating Profitable Discussions 📈
         </div>
-        <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">
-          Join Now
-        </button>
+        <JoinDialog />
       </motion.div>
     </AuroraBackground>
   );
