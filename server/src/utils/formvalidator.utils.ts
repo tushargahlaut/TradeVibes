@@ -4,6 +4,6 @@ export function validateEmail(email: string): boolean {
 }
 
 export function validateName(name: string): boolean {
-  const nameRegex = /^[A-Za-z\s'-]+$/;
+  const nameRegex = /^[A-Za-z\s'\d-]+$/;
   return nameRegex.test(name);
 }
