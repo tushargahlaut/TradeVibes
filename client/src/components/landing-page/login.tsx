@@ -19,6 +19,11 @@ import GoogleIcon from "@/assets/google-icon.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/components/ui/use-toast";
+import { BaseAxios } from "@/utils/axios";
+import { AxiosError } from "axios";
+import { useUserStore } from "@/store/user.store";
+import { useNavigate } from "react-router-dom";
 
 interface LoginComponentProps {
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
@@ -35,6 +40,9 @@ const formSchema = z.object({
 });
 
 export function LoginComponent({ setActiveTab }: LoginComponentProps) {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,8 +51,31 @@ export function LoginComponent({ setActiveTab }: LoginComponentProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const loginResult = await BaseAxios.post("/api/v1/auth/login", {
+        email: values.email,
+        password: values.password,
+      });
+      sessionStorage.setItem("accessToken", loginResult?.data?.token);
+      updateUserDetails(loginResult?.data?.data);
+      toast({
+        title: "Congratulations!, Logged In Successfully",
+        description: loginResult.data?.message,
+      });
+      navigate("/posts");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          variant: "destructive",
+          title:
+            "Uh oh! Something went wrong." +
+            ` (Error: ${error?.response?.status})`,
+          description: `${error.response?.data?.message}`,
+        });
+      }
+      console.log("Something Went Wrong in Login", error);
+    }
   }
 
   return (

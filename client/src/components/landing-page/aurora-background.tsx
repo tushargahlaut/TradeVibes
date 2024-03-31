@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { AuroraBackground } from "../ui/aurora-background";
 import { JoinDialog } from "./join-dialog";
+import { RedirectToHome } from "./redirect-home";
 
 export function LandingPage() {
   return (
@@ -21,7 +22,11 @@ export function LandingPage() {
         <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
           Cultivating Profitable Discussions 📈
         </div>
-        <JoinDialog />
+        {sessionStorage.getItem("accessToken") ? (
+          <RedirectToHome />
+        ) : (
+          <JoinDialog />
+        )}
       </motion.div>
     </AuroraBackground>
   );

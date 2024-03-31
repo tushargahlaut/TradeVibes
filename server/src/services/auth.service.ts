@@ -41,7 +41,8 @@ export const BasicLoginService = async (payload: Payload) => {
     }
     const verifyPassword =
       userDetails?.password &&
-      VerifyPassword(payload.password, userDetails?.password);
+      (await VerifyPassword(payload.password, userDetails?.password));
+    console.log("Password Verification Result", verifyPassword);
     if (!verifyPassword) {
       throw new Error("Incorrect Password");
     }

@@ -21,6 +21,8 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { BaseAxios } from "@/utils/axios";
 import { AxiosError } from "axios";
+import { useUserStore } from "@/store/user.store";
+import { useNavigate } from "react-router-dom";
 
 interface SignupComponentProps {
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
@@ -44,6 +46,8 @@ const formSchema = z.object({
 
 export function SignupComponent({ setActiveTab }: SignupComponentProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const updateUserDetails = useUserStore((state) => state.updateUserDetails);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,27 +65,24 @@ export function SignupComponent({ setActiveTab }: SignupComponentProps) {
         email: values.email,
         password: values.password,
       });
-      console.log("Signup Result", signupResult);
       sessionStorage.setItem("accessToken", signupResult?.data?.token);
-
+      updateUserDetails(signupResult?.data?.data);
       toast({
         title: "Congratulations!, Registered Successfully",
         description: signupResult.data?.message,
       });
-    } catch (error) {
+      navigate("/posts");
+    } catch (error: any) {
       if (error instanceof AxiosError) {
         toast({
           variant: "destructive",
-          title: "Uh oh! Something went wrong." + ` (${error?.status})`,
+          title:
+            "Uh oh! Something went wrong." +
+            ` (Error: ${error?.response?.status})`,
           description: `${error.response?.data?.message}`,
         });
       }
-      console.log("Something Went Wrong", error);
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "Try Again Later",
-      });
+      console.log("Something Went Wrong in Signup", error);
     }
   }
 
