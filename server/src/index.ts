@@ -4,6 +4,7 @@ import cors from "cors";
 import redisClient from "./database/redis/redisClient";
 import { connectMongoDB } from "./database/mongodb/mongoClient";
 import AuthRouter from "./routes/auth.route";
+import UserRouter from "./routes/user.route";
 
 dotenv.config();
 
@@ -13,8 +14,10 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 app.use("/api/v1/auth", AuthRouter);
+app.use("/api/v1/user", UserRouter);
+
 app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+  res.send("TradeVibes Server");
 });
 
 app.listen(port, () => {

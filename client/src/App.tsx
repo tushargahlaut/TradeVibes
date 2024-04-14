@@ -3,6 +3,7 @@ import { TopBar } from "./components/common/top-bar";
 import { LandingPage } from "./components/landing-page/aurora-background";
 import { Routes, Route } from "react-router-dom";
 import { useUserStore } from "./store/user.store";
+import { PostsComponent } from "./components/posts/Posts";
 
 function App() {
   const { user_id } = useUserStore();
@@ -15,6 +16,7 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/posts" element={<PostsComponent />} />
       </Routes>
     </div>
   );

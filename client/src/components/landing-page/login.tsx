@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import GoogleIcon from "@/assets/google-icon.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -24,6 +23,13 @@ import { BaseAxios } from "@/utils/axios";
 import { AxiosError } from "axios";
 import { useUserStore } from "@/store/user.store";
 import { useNavigate } from "react-router-dom";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { JwtPayload, jwtDecode } from "jwt-decode";
+
+interface NewJwtPayload extends JwtPayload{
+  name: string;
+  email: string;
+}
 
 interface LoginComponentProps {
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
@@ -51,6 +57,7 @@ export function LoginComponent({ setActiveTab }: LoginComponentProps) {
     },
   });
 
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const loginResult = await BaseAxios.post("/api/v1/auth/login", {
@@ -77,6 +84,35 @@ export function LoginComponent({ setActiveTab }: LoginComponentProps) {
       console.log("Something Went Wrong in Login", error);
     }
   }
+
+  const googleResponseMessage = async(googleResponse: CredentialResponse) => {
+    console.log(googleResponse);
+    try {
+      const token = googleResponse.credential as string;
+      const {name, email} = jwtDecode<NewJwtPayload>(token);
+      const googleLoginAPICall = await BaseAxios.post("/api/v1/auth/google", {name, email});
+      sessionStorage.setItem("accessToken", googleLoginAPICall?.data?.token);
+      updateUserDetails(googleLoginAPICall?.data?.data);
+      toast({
+        title: "Congratulations!, Logged In Successfully",
+        description: googleLoginAPICall.data?.message,
+      });
+      navigate("/posts");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          variant: "destructive",
+          title:
+            "Uh oh! Something went wrong." +
+            ` (Error: ${error?.response?.status})`,
+          description: `${error.response?.data?.message}`,
+        });
+      }
+    }
+};
+const errorMessage = () => {
+    console.log("Error while doing Google Login");
+};
 
   return (
     <Card>
@@ -118,13 +154,10 @@ export function LoginComponent({ setActiveTab }: LoginComponentProps) {
               <span className="font-semibold">Login</span>
             </Button>
             <Button className="flex items-center justify-center">
-              <img
-                className="w-4 h-4 object-contain"
-                src={GoogleIcon}
-                alt="Google Icon"
-              />
-              <span className="ml-1 font-semibold">Login with Google</span>
+              <GoogleLogin onSuccess={googleResponseMessage} onError={errorMessage} />
+             
             </Button>
+
             <p className="text-sm text-center text-muted-foreground">
               New Here?{" "}
               <span

@@ -11,6 +11,8 @@ export const GenerateJWTToken = (payload: IBasicUserOutput): string => {
   return token;
 };
 
+
+//Verifies JWT Token Against a given JWTSecret
 export const DecodeJWTToken = (token: string): JWTInterface => {
   const payload = jwt.verify(token, jwtSecret) as JWTInterface;
   return payload;

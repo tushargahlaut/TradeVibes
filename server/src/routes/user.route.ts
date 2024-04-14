@@ -1,9 +1,11 @@
 import { Router } from "express";
 import {
-  BasicLoginController,
-  BasicSignupController,
-} from "../controllers/auth.controller";
+  DeleteUserController
+} from "../controllers/user.controller";
 const UserRouter = Router();
 
-UserRouter.post("/login", BasicLoginController);
-UserRouter.post("/register", BasicSignupController);
+UserRouter.delete("/", DeleteUserController);
+
+
+
+export default UserRouter;

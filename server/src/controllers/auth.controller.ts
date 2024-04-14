@@ -6,6 +6,8 @@ import {
 } from "../services/auth.service";
 import { IBasicUserOutput } from "../interfaces/user.interface";
 import { GenerateJWTToken } from "../utils/jwt.utils";
+import { GoogleLoginDAL } from "../database/mongodb/DAL/user.dal";
+
 
 export const BasicLoginController = async (
   req: Request,
@@ -103,3 +105,38 @@ export const BasicSignupController = async (
     });
   }
 };
+
+
+export const GoogleAuthController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  try {
+    const {name, email} = req.body;
+    if(!name || !email){
+      return res.status(400).json({
+        success: false,
+        message:"Email or Name is not present"
+      })
+    }
+
+    const googleAuthResult = await GoogleLoginDAL({name, email});
+    const jwtToken = GenerateJWTToken(googleAuthResult);
+
+    return res.status(200).json({
+      success: true,
+      token: jwtToken,
+      data: googleAuthResult,
+      message:"Login with Google is Success",
+    });
+  } catch (error: any) {
+    console.log("Error", error?.message);
+    return res.status(500).json({
+      success: false,
+      message:"Login with Google has Failed",
+    })
+  }
+}
+
+
+

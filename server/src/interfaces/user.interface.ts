@@ -12,6 +12,4 @@ export interface IBasicUserInput {
   password: string;
 }
 
-export interface IBasicUserOutput extends Omit<IBasicUserInput, "password"> {
-  user_id: string;
-}
+export interface IBasicUserOutput extends Omit<IBasicUserInput, "password"> {}
