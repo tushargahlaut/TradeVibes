@@ -11,3 +11,4 @@ Todo:
 - Need to go through NIFTY API 
 - Learn Bucket Storage for Image, Need to write APIs for Cloudinary, Researching Image Compression.
 - Started with Building Frontend, Done setting up Shadcn, Landing Page UI Done
+- Test
