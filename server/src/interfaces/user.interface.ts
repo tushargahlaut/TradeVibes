@@ -10,6 +10,9 @@ export interface IBasicUserInput {
   name: string;
   email: string;
   password: string;
+
 }
 
-export interface IBasicUserOutput extends Omit<IBasicUserInput, "password"> {}
+export interface IBasicUserOutput extends Omit<IBasicUserInput, "password"> {
+  user_id?: string;
+}

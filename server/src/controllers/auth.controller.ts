@@ -3,6 +3,7 @@ import { validateEmail, validateName } from "../utils/formvalidator.utils";
 import {
   BasicLoginService,
   BasicSignupService,
+  GoogleLoginService,
 } from "../services/auth.service";
 import { IBasicUserOutput } from "../interfaces/user.interface";
 import { GenerateJWTToken } from "../utils/jwt.utils";
@@ -79,7 +80,7 @@ export const BasicSignupController = async (
         message: "Improper Validation for Email",
       });
     }
-    const basicSignUpUser: IBasicUserOutput = await BasicSignupService({
+    const basicSignUpUser = await BasicSignupService({
       name,
       email,
       password,
@@ -120,7 +121,7 @@ export const GoogleAuthController = async (
       })
     }
 
-    const googleAuthResult = await GoogleLoginDAL({name, email});
+    const googleAuthResult = await GoogleLoginService({name, email});
     const jwtToken = GenerateJWTToken(googleAuthResult);
 
     return res.status(200).json({

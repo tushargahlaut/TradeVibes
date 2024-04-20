@@ -5,6 +5,11 @@ dotenv.config();
 
 const encryptionKey = process.env.ENCRYPTION_KEY as string;
 
+export function getRandomString(){
+    const randomString = crypto.randomBytes(5).toString('hex');
+    return randomString;
+}
+
 export function encryptString(inputString: string) {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(

@@ -8,6 +8,7 @@ import {
   IBasicUserOutput,
 } from "../interfaces/user.interface";
 import { HashPassword, VerifyPassword } from "../utils/bcrypt.utils";
+import { encryptString } from "../utils/crypto.util";
 
 interface BasicPayload {
   email: string;
@@ -26,8 +27,9 @@ export const BasicSignupService = async (
     const hashedPassword = await HashPassword(payload.password);
     payload.password = hashedPassword;
     const basicSignupData = await BasicSignupDAL(payload);
-    const { name, email } = basicSignupData;
-    return { name, email };
+    const { name, email, _id } = basicSignupData;
+    const user_id = encryptString(_id.toString());
+    return { name, email, user_id };
   } catch (error: any) {
     if (error?.message === "email should be unique") {
       throw new Error("email should be unique");
@@ -50,8 +52,9 @@ export const BasicLoginService = async (payload: BasicPayload) => {
     if (!verifyPassword) {
       throw new Error("Incorrect Password");
     }
-    const { name, email } = userDetails;
-    return { name, email };
+    const { name, email, _id } = userDetails;
+    const user_id = encryptString(_id.toString());
+    return { name, email, user_id };
   } catch (error: any) {
     console.log("Error in BasicLoginService", error);
     throw new Error(error?.message);
@@ -61,8 +64,9 @@ export const BasicLoginService = async (payload: BasicPayload) => {
 export const GoogleLoginService = async(payload: GooglePayload) =>{
   try {
     const basicSignupData = await GoogleLoginDAL(payload);
-    const { name, email } = basicSignupData;
-    return { name, email };
+    const { name, email, _id } = basicSignupData;
+    const user_id = encryptString(_id.toString());
+    return { name, email, user_id };
   } catch (error: any) {
     if (error?.message === "email should be unique") {
       throw new Error("email should be unique");

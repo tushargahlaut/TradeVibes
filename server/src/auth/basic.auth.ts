@@ -1,8 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import * as dotenv from "dotenv";
 import { DecodeJWTToken } from "../utils/jwt.utils";
+import { JWTInterface } from "../interfaces/jwtpayload.interface";
 
 dotenv.config();
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JWTInterface;
+    }
+  }
+}
 
 export const VerifyTokenMiddleware = (
   req: Request,

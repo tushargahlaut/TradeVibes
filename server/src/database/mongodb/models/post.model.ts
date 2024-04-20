@@ -6,10 +6,10 @@ const postSchema = new Schema<IPost>({
   slug: {type: String, required: true},
   description: { type: String, required: true },
   image_url: { type: String },
+  author_name: { type: String },
   posted_by: { type: Schema.Types.ObjectId, ref: "User", required: true },
   comments: [{ 
     text: { type: String, required: true },
-    author_email: { type: String, required: true },
     author_name: { type: String, required: true }
   }],
   likesCount:{

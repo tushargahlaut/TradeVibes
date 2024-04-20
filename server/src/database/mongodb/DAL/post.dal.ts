@@ -33,7 +33,8 @@ export const GetTopPostsDAL = async(): Promise<IPost[]> => {
 
 export const CreatePostDAL = async(payload: any) =>{
     try {
-        return "Placeholder";
+       const createdPost = await PostModel.create(payload);
+       return createdPost;
     } catch (error: any) {
         console.log("Error in GetTopPostsDAL", error);
         throw new Error(error?.message)
