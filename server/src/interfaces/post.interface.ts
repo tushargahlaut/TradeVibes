@@ -21,6 +21,7 @@ export interface IPost extends Document {
   likes: ILikes[];
   likesCount: number;
   posted_by: IUser;
+  tags: string[];
 }
 
 export interface IPostInput extends Omit<IPost, "comments" | "likes" | "likesCount" | "slug" | "author_name">{};

@@ -19,11 +19,11 @@ export const GetTop5PostsController = async(req:Request, res:Response): Promise<
 
 export const CreatePostController = async(req: Request, res: Response): Promise<Response> =>{
     try {
-        const {heading, description, image_url} = req.body;
+        console.log("Req Body", req);
+        const {heading, description, image, tags} = req.body;
         const user: any = req["user"]
         const userDetails = user["payload"];
-        console.log("User Details", userDetails);
-        const createPostResult = await CreatePostService({heading, description, image_url, userDetails: userDetails});
+        const createPostResult = await CreatePostService({heading, description, image, userDetails: userDetails, tags});
         return res.status(200).json({
             success: true,
             data: createPostResult

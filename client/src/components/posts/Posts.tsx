@@ -1,6 +1,9 @@
+import { CreatePost } from "./CreatePost";
+
 export function PostsComponent() {
   return (
-    <div>
+    <div className="w-full justify-center">
+      <CreatePost/>
       <p>Posts Here</p>
     </div>
   );

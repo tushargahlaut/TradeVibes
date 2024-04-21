@@ -24,11 +24,13 @@ app.get("/", (req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
-  connectMongoDB();
+  connectMongoDB().then(()=>{
+
+  }).catch((err)=> console.log("Error in Mongo Connection", err));
   redisClient
     .connect()
     .then(() => {
       console.log("Successfully Connected Redis");
     })
-    .catch((err) => console.log("Error in Connecting", err));
+    .catch((err) => console.log("Error in Connecting Redis", err));
 });
