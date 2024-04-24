@@ -1,7 +1,15 @@
 import { Router } from "express";
-import { CreatePostController, GetTop5PostsController } from "../controllers/post.controller";
+import { CreatePostController, GetLatestPostsController, GetTop5PostsController } from "../controllers/post.controller";
 import { VerifyTokenMiddleware } from "../auth/basic.auth";
 import multer from 'multer';
+ 
+declare global {
+    namespace Express {
+      interface Request {
+        image?: Express.Multer.File;
+      }
+    }
+  }
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -9,6 +17,7 @@ const upload = multer({ storage });
 const PostRouter = Router();
 
 PostRouter.get("/top5", GetTop5PostsController);
+PostRouter.get("/", GetLatestPostsController);
 PostRouter.post("/", VerifyTokenMiddleware, upload.single('image'), CreatePostController);
 PostRouter.get("/:slug");
 

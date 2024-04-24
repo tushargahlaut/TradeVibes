@@ -1,4 +1,4 @@
-import { CreatePost } from "./CreatePost";
+import { CreatePost } from "./create-post";
 
 export function PostsComponent() {
   return (

@@ -12,7 +12,11 @@ dotenv.config();
 const app: Express = express();
 app.use(cors());
 app.use(express.json());
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
+
+
+
+
 
 app.use("/api/v1/auth", AuthRouter);
 app.use("/api/v1/user", UserRouter);
