@@ -15,7 +15,7 @@ export function CreatePost() {
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full my-4">
+      <DialogTrigger asChild className="w-full my-4">
         <Button variant="secondary" className="w-1/3">
           <MessageCircleMore className="text-xs mr-2" />{" "}
           <span>Got Something on your mind? </span>

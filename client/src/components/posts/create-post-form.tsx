@@ -45,7 +45,7 @@ const formSchema = z.object({
           ACCEPTED_IMAGE_TYPES.includes(file?.type)
         ),
       "Only these types are allowed .jpg, .jpeg, .png and .webp"
-    ),
+    ).nullable()
 });
 
 export function CreatePostForm() {
