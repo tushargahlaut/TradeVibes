@@ -21,6 +21,9 @@ const postSchema = new Schema<IPost>({
     index: { type: Number, required: true },
     made_by: { type: String, required: true }
   }]
+},
+{
+  timestamps: true
 });
 
 export const PostModel = model<IPost>("Post", postSchema);

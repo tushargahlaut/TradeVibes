@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { CreatePostService, GetTop5PostsService } from "../services/post.service";
-import cloudinary from "../services/cloudinary.service";
+import { CreatePostService, GetLatestPostsService, GetTop5PostsService } from "../services/post.service";
 import { handleCloudinaryUpload } from "../services/cloudinary.service";
 
 export const GetTop5PostsController = async(req:Request, res:Response): Promise<Response> =>{
@@ -23,12 +22,16 @@ export const GetLatestPostsController = async(req:Request, res:Response): Promis
     try {
         const query = req.query;
         console.log("Query -->", query);
-        // const getLatestPosts = await GetLatestPostsService();
+        const skip = query.skip !== undefined ? parseInt(query.skip as string) : 0;
+        const limit = query.limit !== undefined ? parseInt(query.limit as string) : 5;
+        const getLatestPosts = await GetLatestPostsService(skip, limit);
 
         return res.status(200).json({
             success: true,
             message:"Fetched Latest Posts Successfully",
-        })
+            data: getLatestPosts.getLatestPosts,
+            totalPosts: getLatestPosts.getTotalPosts
+        });
     } catch (error) {
         return res.status(500).json({
             success:false,
@@ -44,7 +47,6 @@ export const CreatePostController = async(req: Request, res: Response): Promise<
         const image = req["file"];
         let image_url;
         if(image){
-            console.log("Inside Image");
             const b64 = Buffer.from(image.buffer).toString("base64");
             let dataURI = "data:" + image.mimetype + ";base64," + b64;
             const cldRes = await handleCloudinaryUpload(dataURI);

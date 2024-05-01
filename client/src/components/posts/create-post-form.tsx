@@ -15,6 +15,7 @@ import { Textarea } from "../ui/textarea";
 import ExtAxios from "@/utils/axios";
 import { AxiosError } from "axios";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -48,8 +49,13 @@ const formSchema = z.object({
     ).nullable()
 });
 
-export function CreatePostForm() {
+interface CreatePostFormProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function CreatePostForm({setOpen}: CreatePostFormProps) {
   const { toast } = useToast();
+  const [disabled, setDisabled] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,7 +66,9 @@ export function CreatePostForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setDisabled(true)
     try {
+     
       console.log("Form Values", values);
       const formData = new FormData();
       formData.append("heading", values.heading);
@@ -71,7 +79,10 @@ export function CreatePostForm() {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Submit Post", submitPost);
+      toast({
+        title: "Posted Successfully!",
+      })
+      setOpen(false);
     } catch (error: any) {
       if (error instanceof AxiosError) {
         toast({
@@ -84,6 +95,7 @@ export function CreatePostForm() {
       }
       console.log("Something Went Wrong in Signup", error);
     }
+    setDisabled(false)
   }
   return (
     <Form {...form}>
@@ -138,7 +150,7 @@ export function CreatePostForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full my-2" variant={"secondary"} type="submit">
+        <Button disabled={disabled} className="w-full my-2" variant={"secondary"} type="submit">
           <span className="font-semibold">Submit</span>
         </Button>
       </form>

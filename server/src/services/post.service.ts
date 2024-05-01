@@ -1,4 +1,4 @@
-import { CreatePostDAL, GetTopPostsDAL } from "../database/mongodb/DAL/post.dal";
+import { CreatePostDAL, GetLatestPostsDAL, GetTopPostsDAL, GetTotalPostsDAL } from "../database/mongodb/DAL/post.dal";
 import { IPost } from "../interfaces/post.interface";
 import { decryptString } from "../utils/crypto.util";
 import { SlugifyString } from "../utils/slugify.util";
@@ -10,6 +10,18 @@ export const GetTop5PostsService = async(): Promise<IPost[]> =>{
         return getTop5PostsServiceResult;
     } catch (error: any) {
         console.log("Error in GetTop5PostsService", error);
+        throw new Error(error?.message)
+    }
+}
+
+export const GetLatestPostsService = async(skip: number, limit: number) => {
+    try {
+        const getLatestPosts = await GetLatestPostsDAL(skip, limit);
+        const getTotalPosts = await GetTotalPostsDAL();
+
+        return {getLatestPosts, getTotalPosts};
+    } catch (error: any) {
+        console.log("Error in GetLatestPostsService", error);
         throw new Error(error?.message)
     }
 }

@@ -1,10 +1,11 @@
 import { CreatePost } from "./create-post";
+import { Posts } from "./posts";
 
-export function PostsComponent() {
+export function PostsPage() {
   return (
-    <div className="w-full justify-center">
+    <div className="flex flex-col items-center justify-center w-full h-full">
       <CreatePost/>
-      <p>Posts Here</p>
+      <Posts/>
     </div>
   );
 }
