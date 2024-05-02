@@ -6,4 +6,4 @@ COPY . .
 RUN npm run build
 ENV PORT = 8080
 EXPOSE $PORT
-CMD ["node", "dist/app.js"]
+CMD ["node", "dist/index.js"]
