@@ -3,6 +3,7 @@ import redisClient from "../database/redis/redisClient";
 
 const NIFTY_URL = process.env.NIFTY_URL as string;
 const NIFTY_USER_AGENT = process.env.NIFTY_USER_AGENT as string;
+const NIFTY_REF = process.env.NIFTY_REF as string;
 
 
 export const GetNiftyDataService = async() =>{
@@ -13,7 +14,7 @@ export const GetNiftyDataService = async() =>{
         }
         const apiReq = await axios.get(NIFTY_URL,{
             headers:{
-                "Referer": NIFTY_URL,
+                
                 "User-Agent": NIFTY_USER_AGENT,
                 "Host":	"www.nseindia.com",
                 "Connection": "keep-alive",

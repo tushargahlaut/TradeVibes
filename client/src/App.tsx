@@ -4,6 +4,7 @@ import { LandingPage } from "./components/landing-page/aurora-background";
 import { Routes, Route } from "react-router-dom";
 import { useUserStore } from "./store/user.store";
 import { PostsPage } from "./components/posts/index";
+import { Nifty } from "./components/nifty";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/posts" element={<PostsPage />} />
+        <Route path="/nifty" element={<Nifty/>} />
       </Routes>
     </div>
   );
