@@ -1,24 +1,38 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+
 import { BaseAxios } from "@/utils/axios";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { AxiosError } from "axios";
 
+interface ILike{
+  made_by: string;
+}
+
+interface IComment{
+  text: string;
+  author_name: string;
+}
+
+interface IPost {
+  heading: string;
+  slug: string;
+  description: string;
+  image_url: string;
+  author_name: string;
+  posted_by: string;
+  likesCount: number;
+  commentsCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
 export function Posts() {
   const { toast } = useToast();
-  const [posts, setPosts] = useState({});
+  const [posts, setPosts] = useState<IPost[] | null>();
   const [page, setPage] = useState(1);
   const limit = 5;
   const skip = (page-1)*limit;
-  let totalPages = 0;
 
   async function fetchPosts() {
     try {
@@ -30,7 +44,6 @@ export function Posts() {
       });
       console.log("Get Posts", getPosts);
       setPosts(getPosts.data.data);
-      totalPages = getPosts.data.totalPosts;
       toast({
         title: getPosts.data.message,
       });
@@ -53,30 +66,7 @@ export function Posts() {
   }, []);
   return (
     <div>
-      <Pagination>
-        <PaginationContent>
-           {page > 1  && <PaginationItem>
-            <PaginationPrevious onClick={()=>{
-                setPage((prev)=>prev-1)
-            }} />
-          </PaginationItem>} 
-          
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          {(totalPages - page) > 2 && <PaginationItem>
-            <PaginationNext onClick={()=>{
-                setPage((prev)=>prev+1)
-            }} />
-          </PaginationItem>}
-          
-        </PaginationContent>
-      </Pagination>
+      
     </div>
   );
 }

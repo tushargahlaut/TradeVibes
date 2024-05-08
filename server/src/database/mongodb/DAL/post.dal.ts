@@ -48,7 +48,7 @@ export const GetLatestPostsDAL = async (
     const getLatestPosts = await PostModel.find()
       .sort({createdAt: -1})
       .skip(skip)
-      .limit(limit);
+      .limit(limit).select("-_id -__v -comments -likes");
     return getLatestPosts;
   } catch (error: any) {
     console.log("Error in GetTopPostsDAL", error);

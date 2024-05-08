@@ -12,13 +12,17 @@ const postSchema = new Schema<IPost>({
     text: { type: String, required: true },
     author_name: { type: String, required: true }
   }],
+  commentsCount: {
+    type: Number,
+    required: true,
+    default: 0
+  },
   likesCount:{
     type: Number,
     required: true,
     default: 0
   },
   likes: [{ 
-    index: { type: Number, required: true },
     made_by: { type: String, required: true }
   }]
 },

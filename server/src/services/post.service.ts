@@ -35,6 +35,8 @@ export const CreatePostService = async(payload: any) =>{
         const posted_by = {"name": payload.userDetails.name, "email": payload.userDetails.email, "_id": decryptedString };
         const pimage_url = payload.image_url || "";
         const createdPost = await CreatePostDAL({heading: pheading, description:payload.description, author_name: pauthor_name, slug: pslug, posted_by, image_url: pimage_url});
+
+        //This is the data I am returning.
         const {heading, slug, description, image_url, author_name, likesCount, comments, likes} = createdPost;
         return {heading, slug, description, image_url, author_name, likesCount, comments, likes};
     } catch (error: any) {
