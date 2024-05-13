@@ -18,7 +18,7 @@ export const GetLatestPostsService = async(skip: number, limit: number) => {
     try {
         const getLatestPosts = await GetLatestPostsDAL(skip, limit);
         const getTotalPosts = await GetTotalPostsDAL();
-
+        
         return {getLatestPosts, getTotalPosts};
     } catch (error: any) {
         console.log("Error in GetLatestPostsService", error);
@@ -38,7 +38,8 @@ export const CreatePostService = async(payload: any) =>{
 
         //This is the data I am returning.
         const {heading, slug, description, image_url, author_name, likesCount, comments, likes} = createdPost;
-        return {heading, slug, description, image_url, author_name, likesCount, comments, likes};
+
+        return {heading, slug,description, image_url, author_name, likesCount, comments, likes};
     } catch (error: any) {
         console.log("Error in CreatePostService", error);
         throw new Error(error?.message)

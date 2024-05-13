@@ -21,7 +21,7 @@ export const GetTop5PostsController = async(req:Request, res:Response): Promise<
 export const GetLatestPostsController = async(req:Request, res:Response): Promise<Response> =>{
     try {
         const query = req.query;
-        console.log("Query -->", query);
+        
         const skip = query.skip !== undefined ? parseInt(query.skip as string) : 0;
         const limit = query.limit !== undefined ? parseInt(query.limit as string) : 5;
         const getLatestPosts = await GetLatestPostsService(skip, limit);
