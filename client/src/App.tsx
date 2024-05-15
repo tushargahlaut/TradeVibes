@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import { useUserStore } from "./store/user.store";
 import { PostsPage } from "./components/posts/index";
 import { Nifty } from "./components/nifty";
+import { SinglePost } from "./components/posts/single-post";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/posts" element={<PostsPage />} />
+        <Route path="/posts/:slug" element={<SinglePost/>} />
         <Route path="/nifty" element={<Nifty/>} />
       </Routes>
     </div>

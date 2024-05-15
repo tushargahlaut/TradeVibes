@@ -1,14 +1,16 @@
 import { truncateString } from "@/utils/sm.util";
 import { IPost } from "./posts";
 import { Heart, MessageSquareText } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface PostProps {
     post: IPost;
   }
 
 export function Post({post}: PostProps) {
+  const navigate = useNavigate();
   return (
-    <div className="h-full w-full md:h-3/4 md:w-3/4 bg-secondary p-4 m-3 rounded-md cursor-pointer">
+    <div onClick={()=>navigate(`/posts/${post.slug}`)} className="h-full w-full md:h-3/4 md:w-3/4 bg-secondary p-4 m-3 rounded-md cursor-pointer">
        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{post.heading}</h4>
         <p>{truncateString(post.description)}</p>
         <div className="flex mt-2">

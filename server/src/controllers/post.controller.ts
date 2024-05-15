@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreatePostService, GetLatestPostsService, GetTop5PostsService } from "../services/post.service";
+import { CreatePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService } from "../services/post.service";
 import { handleCloudinaryUpload } from "../services/cloudinary.service";
 
 export const GetTop5PostsController = async(req:Request, res:Response): Promise<Response> =>{
@@ -36,6 +36,36 @@ export const GetLatestPostsController = async(req:Request, res:Response): Promis
         return res.status(500).json({
             success:false,
             message:"Failed to fetch posts, try again later"
+        });
+    }
+}
+
+
+export const GetSinglePostController = async(req: Request, res: Response): Promise<Response> =>{
+    try {
+        const slug = req.params.slug as string;
+        if(!slug){
+            return res.status(400).json({
+                success: false,
+                message:"No slug provided"
+            });
+        }
+        const result = await GetSinglePostService(slug);
+        if(!result){
+            return res.status(400).json({
+                success: false,
+                message:"Slug doesn't exist or is invalid"
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message:"Fetched Post Successfully",
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Failed to fetch post, try again later"
         });
     }
 }

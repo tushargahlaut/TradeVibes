@@ -40,6 +40,21 @@ export const GetTotalPostsDAL = async(): Promise<number> =>{
   }
 }
 
+export const GetSinglePostDAL = async(slug: string) => {
+  try {
+    const result = await PostModel.findOne({
+      slug
+    })
+    if(!result){
+      return null
+    }
+    return result;
+  } catch (error: any) {
+    console.log("Error in GetSinglePostDAL", error);
+    throw new Error(error?.message);
+}
+}
+
 export const GetLatestPostsDAL = async (
   skip: number,
   limit: number
