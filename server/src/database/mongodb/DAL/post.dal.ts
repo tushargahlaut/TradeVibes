@@ -30,30 +30,62 @@ export const GetTopPostsDAL = async (): Promise<IPost[]> => {
   }
 };
 
-export const GetTotalPostsDAL = async(): Promise<number> =>{
+export const GetTotalPostsDAL = async (): Promise<number> => {
   try {
     const totalPosts = await PostModel.countDocuments({});
     return totalPosts;
   } catch (error: any) {
-      console.log("Error in GetTopPostsDAL", error);
-      throw new Error(error?.message);
+    console.log("Error in GetTopPostsDAL", error);
+    throw new Error(error?.message);
   }
-}
+};
 
-export const GetSinglePostDAL = async(slug: string) => {
+export const GetSinglePostDAL = async (slug: string) => {
   try {
     const result = await PostModel.findOne({
-      slug
-    })
-    if(!result){
-      return null
+      slug,
+    });
+    if (!result) {
+      return null;
     }
     return result;
   } catch (error: any) {
     console.log("Error in GetSinglePostDAL", error);
     throw new Error(error?.message);
-}
-}
+  }
+};
+
+export const LikePostDAL = async (slug: string, email: string) => {
+  try {
+    const postFind = await PostModel.findOne({
+      slug,
+    });
+
+    if (!postFind) {
+      return null;
+    }
+
+    let operation = "";
+
+    const emailIndex = postFind.likes.findIndex(
+      (like) => like.made_by === email
+    );
+    if (emailIndex === -1) {
+      postFind.likes.push({ made_by: email });
+      postFind.likesCount++;
+      operation = "add";
+    } else {
+      postFind.likes.splice(emailIndex, 1);
+      postFind.likesCount--;
+      operation = "rem";
+    }
+    await postFind.save();
+    return operation;
+  } catch (error: any) {
+    console.log("Error in LikePostDAL", error);
+    throw new Error(error?.message);
+  }
+};
 
 export const GetLatestPostsDAL = async (
   skip: number,
@@ -61,9 +93,10 @@ export const GetLatestPostsDAL = async (
 ): Promise<IPost[]> => {
   try {
     const getLatestPosts = await PostModel.find()
-      .sort({createdAt: -1})
+      .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(limit).select("-_id -__v -comments -likes");
+      .limit(limit)
+      .select("-_id -__v -comments -likes");
     return getLatestPosts;
   } catch (error: any) {
     console.log("Error in GetTopPostsDAL", error);

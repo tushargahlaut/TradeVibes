@@ -8,7 +8,6 @@ export interface IComment {
 }
 
 export interface ILikes{
-  index: number;
   made_by: string;
 }
 

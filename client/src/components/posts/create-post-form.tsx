@@ -16,6 +16,7 @@ import ExtAxios from "@/utils/axios";
 import { AxiosError } from "axios";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
@@ -55,6 +56,7 @@ interface CreatePostFormProps {
 
 export function CreatePostForm({setOpen}: CreatePostFormProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [disabled, setDisabled] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,6 +85,7 @@ export function CreatePostForm({setOpen}: CreatePostFormProps) {
         title: "Posted Successfully!",
       })
       setOpen(false);
+      navigate("/posts");
     } catch (error: any) {
       if (error instanceof AxiosError) {
         toast({

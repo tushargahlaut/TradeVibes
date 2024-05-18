@@ -32,7 +32,7 @@ export function Posts() {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [page, setPage] = useState(1);
   const [isFetched, setIsFetched] = useState<boolean>(false);
-  const limit = 1;
+  const limit = 5;
 
   async function fetchPosts(){
     try {

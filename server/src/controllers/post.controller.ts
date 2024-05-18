@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreatePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService } from "../services/post.service";
+import { CreatePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService, LikePostService } from "../services/post.service";
 import { handleCloudinaryUpload } from "../services/cloudinary.service";
 
 export const GetTop5PostsController = async(req:Request, res:Response): Promise<Response> =>{
@@ -54,7 +54,8 @@ export const GetSinglePostController = async(req: Request, res: Response): Promi
         if(!result){
             return res.status(400).json({
                 success: false,
-                message:"Slug doesn't exist or is invalid"
+                message:"Post Not Found",
+                data: null
             });
         }
         return res.status(200).json({
@@ -69,6 +70,33 @@ export const GetSinglePostController = async(req: Request, res: Response): Promi
         });
     }
 }
+
+
+export const LikePostController = async(req: Request, res: Response): Promise<Response> =>{
+    try {
+        const {slug} = req.body;
+        const user: any = req["user"];
+        const email = user.payload.email
+        const handleLike = await LikePostService(slug, email);
+        if(!handleLike){
+            return res.status(400).json({
+                success: false,
+                message:"Post Not Found",
+                data: null
+            });
+        }
+        return res.status(200).json({
+            success:true,
+            data: handleLike
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Failed to like this post, try again later"
+        });
+    }
+}
+
 
 export const CreatePostController = async(req: Request, res: Response): Promise<Response> =>{
     try {

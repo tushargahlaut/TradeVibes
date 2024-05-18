@@ -1,4 +1,4 @@
-import { CreatePostDAL, GetLatestPostsDAL, GetSinglePostDAL, GetTopPostsDAL, GetTotalPostsDAL } from "../database/mongodb/DAL/post.dal";
+import { CreatePostDAL, GetLatestPostsDAL, GetSinglePostDAL, GetTopPostsDAL, GetTotalPostsDAL, LikePostDAL } from "../database/mongodb/DAL/post.dal";
 import { IPost } from "../interfaces/post.interface";
 import { decryptString } from "../utils/crypto.util";
 import { SlugifyString } from "../utils/slugify.util";
@@ -21,6 +21,17 @@ export const GetSinglePostService = async(slug: string): Promise<IPost | null> =
     } catch (error: any) {
         console.log("Error in GetTop5PostsService", error);
         throw new Error(error?.message)
+    }
+}
+
+
+export const LikePostService = async(slug: string, email: string) =>{
+    try {
+        const result = await LikePostDAL(slug, email);
+        return result;
+    } catch (error: any) {
+        console.log("Error in LikePostService", error);
+        throw new Error(error?.message);
     }
 }
 
