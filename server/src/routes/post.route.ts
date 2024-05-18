@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CreatePostController, GetLatestPostsController, GetSinglePostController, GetTop5PostsController, LikePostController } from "../controllers/post.controller";
+import { CommentPostController, CreatePostController, GetLatestPostsController, GetSinglePostController, GetTop5PostsController, LikePostController } from "../controllers/post.controller";
 import { VerifyTokenMiddleware } from "../auth/basic.auth";
 import multer from 'multer';
  
@@ -21,6 +21,7 @@ PostRouter.get("/", GetLatestPostsController);
 PostRouter.get("/:slug", GetSinglePostController);
 PostRouter.post("/", VerifyTokenMiddleware, upload.single('image'), CreatePostController);
 PostRouter.post("/like", VerifyTokenMiddleware, LikePostController);
+PostRouter.post("/comment", VerifyTokenMiddleware, CommentPostController);
 
 
 

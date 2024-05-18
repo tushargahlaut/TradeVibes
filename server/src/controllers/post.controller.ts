@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreatePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService, LikePostService } from "../services/post.service";
+import { CommentPostService, CreatePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService, LikePostService } from "../services/post.service";
 import { handleCloudinaryUpload } from "../services/cloudinary.service";
 
 export const GetTop5PostsController = async(req:Request, res:Response): Promise<Response> =>{
@@ -88,6 +88,26 @@ export const LikePostController = async(req: Request, res: Response): Promise<Re
         return res.status(200).json({
             success:true,
             data: handleLike
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Failed to like this post, try again later"
+        });
+    }
+}
+
+
+export const CommentPostController = async(req: Request, res: Response): Promise<Response> =>{
+    try {
+        const {text, slug} = req.body;
+        const user: any = req["user"];
+        const name = user.payload.name;
+        const result = await CommentPostService(text, name, slug);
+
+        return res.status(200).json({
+            success: true,
+            message:"Added comment successfully",
         })
     } catch (error) {
         return res.status(500).json({

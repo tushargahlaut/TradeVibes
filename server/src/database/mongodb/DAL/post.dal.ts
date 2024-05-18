@@ -87,6 +87,28 @@ export const LikePostDAL = async (slug: string, email: string) => {
   }
 };
 
+
+
+export const CommentPostDAL = async(text: string, name: string, slug: string) =>{
+  try {
+    const postFind = await PostModel.findOne({
+      slug,
+    });
+    if(!postFind){
+      return null;
+    }
+    postFind.comments.push({
+      text, author_name: name
+    });
+    await postFind.save();
+    return "success";
+  } catch (error: any) {
+    console.log("Error in LikePostDAL", error);
+    throw new Error(error?.message);
+  }
+}
+
+
 export const GetLatestPostsDAL = async (
   skip: number,
   limit: number

@@ -22,14 +22,14 @@ interface Like {
 }
 
 export interface Comment {
-  id: string;
+  _id: string;
   text: string;
   author_name: string;
 }
 
 interface IPostComplete extends IPost {
   likes: Like[];
-  comment: Comment[];
+  comments: Comment[];
 }
 
 export function SinglePost() {
@@ -138,7 +138,7 @@ export function SinglePost() {
           </div>
         </CardFooter>
       </Card>
-      <Comments comments={post?.comment} />
+      <Comments comments={post?.comments} />
     </div>
   );
 }
