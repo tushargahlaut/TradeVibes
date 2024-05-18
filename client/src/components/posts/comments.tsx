@@ -17,7 +17,7 @@ import { z } from "zod";
 import { Comment } from "./single-post";
 import { AxiosError } from "axios";
 import ExtAxios from "@/utils/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 
 interface CommentProps {
@@ -42,11 +42,12 @@ function AddComment() {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const { slug } = params;
     try {
-      const addComment = await ExtAxios.post("api/v1/post/comment", {
+      const result = await ExtAxios.post("api/v1/post/comment", {
         text: data.comment,
         slug,
       });
-      console.log("AddComment", addComment);
+      window.location.reload();
+      console.log("Result", result);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -88,7 +89,7 @@ function AddComment() {
 
 export function Comments({ comments }: CommentProps) {
   return (
-    <Card className="my-3 w-3/4">
+    <Card className="my-3">
       <CardContent className="p-3">
         <div className="w-full flex flex-col items-center justify-center">
           <AddComment />

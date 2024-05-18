@@ -100,6 +100,7 @@ export const CommentPostDAL = async(text: string, name: string, slug: string) =>
     postFind.comments.push({
       text, author_name: name
     });
+    postFind.commentsCount = postFind.comments.length;
     await postFind.save();
     return "success";
   } catch (error: any) {

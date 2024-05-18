@@ -115,6 +115,7 @@ export function SinglePost() {
       <Card className="w-full md:w-3/4">
         <CardHeader>
           <CardTitle>{post?.heading}</CardTitle>
+          <CardDescription> Posted By: {post?.author_name}</CardDescription>
         </CardHeader>
         <CardContent>
           <CardDescription>{post?.description}</CardDescription>
