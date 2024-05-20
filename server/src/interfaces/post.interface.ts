@@ -4,6 +4,7 @@ import { IUser } from "./user.interface";
 export interface IComment {
   text: string;
   author_name: string;
+  author_email: string;
 }
 
 export interface ILikes{

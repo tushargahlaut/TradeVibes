@@ -47,10 +47,11 @@ export const LikePostService = async (slug: string, email: string) => {
 export const CommentPostService = async (
   text: string,
   name: string,
+  email:string,
   slug: string
 ) => {
   try {
-    const result = await CommentPostDAL(text, name, slug);
+    const result = await CommentPostDAL(text, name, email, slug);
     return result;
   } catch (error: any) {
     console.log("Error in CommentPostService", error);

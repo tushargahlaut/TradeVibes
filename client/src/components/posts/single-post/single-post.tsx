@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../ui/use-toast";
 import ExtAxios, { BaseAxios } from "@/utils/axios";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
@@ -11,11 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IPost } from "./posts";
+import { IPost } from "../posts-page/posts";
 import { Heart, MessageSquareText } from "lucide-react";
 import { useUserStore } from "@/store/user.store";
-import { useTheme } from "../common/theme-provider";
+import { useTheme } from "../../common/theme-provider";
 import { Comments } from "./comments";
+import { EditDeletePost } from "./edit-delete";
 
 interface Like {
   made_by: string;
@@ -27,7 +28,7 @@ export interface Comment {
   author_name: string;
 }
 
-interface IPostComplete extends IPost {
+export interface IPostComplete extends IPost {
   likes: Like[];
   comments: Comment[];
 }
@@ -114,7 +115,12 @@ export function SinglePost() {
     <div className="p-3 flex flex-col justify-center items-center">
       <Card className="w-full md:w-3/4">
         <CardHeader>
-          <CardTitle>{post?.heading}</CardTitle>
+          <div className="flex justify-between">
+            <CardTitle>{post?.heading}</CardTitle>
+            <div className="flex">
+            <EditDeletePost/>
+            </div>
+          </div>
           <CardDescription> Posted By: {post?.author_name}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -139,7 +145,7 @@ export function SinglePost() {
           </div>
         </CardFooter>
       </Card>
-      <Comments comments={post?.comments} />
+      <Comments setPost={setPost} comments={post?.comments} />
     </div>
   );
 }

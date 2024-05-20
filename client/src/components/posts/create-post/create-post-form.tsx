@@ -9,12 +9,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
 import ExtAxios from "@/utils/axios";
 import { AxiosError } from "axios";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

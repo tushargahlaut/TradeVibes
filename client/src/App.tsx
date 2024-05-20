@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import { useUserStore } from "./store/user.store";
 import { PostsPage } from "./components/posts/index";
 import { Nifty } from "./components/nifty";
-import { SinglePost } from "./components/posts/single-post";
+import { SinglePost } from "./components/posts/single-post/single-post";
 
 
 function App() {

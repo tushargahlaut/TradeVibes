@@ -13,14 +13,20 @@ import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { IPostComplete } from "./single-post";
 import { Comment } from "./single-post";
 import { AxiosError } from "axios";
 import ExtAxios from "@/utils/axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { useParams } from "react-router-dom";
+import { Avatar, AvatarFallback } from "../../ui/avatar";
+import { throttle } from "@/utils/throttle.ts";
 
-interface CommentProps {
+interface AddCommentProps{
+  setPost: React.Dispatch<React.SetStateAction<IPostComplete | null>>
+
+}
+
+interface CommentProps extends AddCommentProps {
   comments: Comment[] | undefined;
 }
 
@@ -30,7 +36,7 @@ const FormSchema = z.object({
   }),
 });
 
-function AddComment() {
+function AddComment({setPost}: AddCommentProps) {
   const params = useParams();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -39,15 +45,19 @@ function AddComment() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  const { reset } = form;
+
+  async function onSubmit(formData: z.infer<typeof FormSchema>) {
     const { slug } = params;
     try {
-      const result = await ExtAxios.post("api/v1/post/comment", {
-        text: data.comment,
+      const {data} = await ExtAxios.post("api/v1/post/comment", {
+        text: formData.comment,
         slug,
       });
-      window.location.reload();
-      console.log("Result", result);
+      setPost(data.data);
+      reset({
+        
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -61,10 +71,12 @@ function AddComment() {
     }
   }
 
+  const throttledSubmit = throttle(onSubmit, 10000);
+
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(throttledSubmit)}
         className="w-full flex items-center justify-center"
       >
         <FormField
@@ -87,12 +99,12 @@ function AddComment() {
   );
 }
 
-export function Comments({ comments }: CommentProps) {
+export function Comments({ comments, setPost }: CommentProps) {
   return (
-    <Card className="my-3">
+    <Card className="my-3 sm:full md:w-3/4">
       <CardContent className="p-3">
         <div className="w-full flex flex-col items-center justify-center">
-          <AddComment />
+          <AddComment setPost={setPost} />
         </div>
         {comments?.map((comment) => {
           return (

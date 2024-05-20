@@ -89,7 +89,7 @@ export const LikePostDAL = async (slug: string, email: string) => {
 
 
 
-export const CommentPostDAL = async(text: string, name: string, slug: string) =>{
+export const CommentPostDAL = async(text: string, name: string, email:string, slug: string) =>{
   try {
     const postFind = await PostModel.findOne({
       slug,
@@ -98,11 +98,11 @@ export const CommentPostDAL = async(text: string, name: string, slug: string) =>
       return null;
     }
     postFind.comments.push({
-      text, author_name: name
+      text, author_name: name, author_email: email
     });
     postFind.commentsCount = postFind.comments.length;
     await postFind.save();
-    return "success";
+    return postFind
   } catch (error: any) {
     console.log("Error in LikePostDAL", error);
     throw new Error(error?.message);

@@ -1,5 +1,5 @@
-import { CreatePost } from "./create-post";
-import { Posts } from "./posts";
+import { CreatePost } from "./create-post/create-post";
+import { Posts } from "./posts-page/posts";
 
 export function PostsPage() {
   return (

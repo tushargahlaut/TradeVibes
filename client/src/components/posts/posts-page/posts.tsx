@@ -1,8 +1,8 @@
 import { BaseAxios } from "@/utils/axios";
 import { useEffect, useState } from "react";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "../../ui/use-toast";
 import { AxiosError } from "axios";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { Post } from "./post";
 
 // interface ILike {

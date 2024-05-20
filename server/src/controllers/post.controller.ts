@@ -102,12 +102,13 @@ export const CommentPostController = async(req: Request, res: Response): Promise
     try {
         const {text, slug} = req.body;
         const user: any = req["user"];
-        const name = user.payload.name;
-        const result = await CommentPostService(text, name, slug);
+        const {name, email} = user.payload;
+        const result = await CommentPostService(text, name, email, slug);
 
         return res.status(200).json({
             success: true,
             message:"Added comment successfully",
+            data: result
         })
     } catch (error) {
         return res.status(500).json({
