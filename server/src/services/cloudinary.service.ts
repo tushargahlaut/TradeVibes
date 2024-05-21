@@ -28,4 +28,15 @@ export const handleCloudinaryUpload = async (file: string) =>{
    
 }
 
+export const handleCloudinaryDelete = async(public_id: string) =>{
+    try {
+        const res = await cloudinary.uploader.destroy(public_id, {
+            resource_type: "auto",
+          });
+        return res;
+    } catch (error) {
+        console.log("Error occured in handle Cld Upload", error);
+    }
+}
+
 export default cloudinary

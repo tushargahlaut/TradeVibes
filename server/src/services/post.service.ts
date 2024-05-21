@@ -85,11 +85,13 @@ export const CreatePostService = async (payload: any) => {
       _id: decryptedString,
     };
     const pimage_url = payload.image_url || "";
+    const pimage_id = payload.image_id || "";
     const createdPost = await CreatePostDAL({
       heading: pheading,
       description: payload.description,
       author_name: pauthor_name,
       author_email:pauthor_email,
+      image_id: pimage_id,
       slug: pslug,
       posted_by,
       image_url: pimage_url,
@@ -101,6 +103,7 @@ export const CreatePostService = async (payload: any) => {
       slug,
       description,
       image_url,
+      image_id,
       author_name,
       likesCount,
       comments,

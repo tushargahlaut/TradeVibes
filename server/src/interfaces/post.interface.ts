@@ -18,6 +18,7 @@ export interface IPost extends Document {
   author_email: string;
   description: string;
   image_url?: string; 
+  image_id?: string;
   comments: IComment[];
   commentsCount: number;
   likes: ILikes[];

@@ -1,4 +1,5 @@
 import { IPost } from "../../../interfaces/post.interface";
+import { handleCloudinaryDelete } from "../../../services/cloudinary.service";
 import { PostModel } from "../models/post.model";
 
 export const GetTopPostsDAL = async (): Promise<IPost[]> => {
@@ -148,6 +149,9 @@ export const DeletePostDAL = async(slug: string, email: string) => {
     }
     if(email!==postFind.author_email){
       throw new Error("mismatch");
+    }
+    if(postFind.image_url && postFind.image_id){
+      handleCloudinaryDelete(postFind.image_id);
     }
     const deletePost = await postFind.deleteOne();
     return deletePost;

@@ -124,16 +124,17 @@ export const CreatePostController = async(req: Request, res: Response): Promise<
         const {heading, description, tags} = req.body;
         const user: any = req["user"];
         const image = req["file"];
-        let image_url;
+        let image_url, image_public_id;
         if(image){
             const b64 = Buffer.from(image.buffer).toString("base64");
             let dataURI = "data:" + image.mimetype + ";base64," + b64;
             const cldRes = await handleCloudinaryUpload(dataURI);
             image_url = cldRes?.secure_url;
+            image_public_id = cldRes?.public_id;
         }
 
         const userDetails = user["payload"];
-        const createPostResult = await CreatePostService({heading, description, image_url, userDetails: userDetails, tags});
+        const createPostResult = await CreatePostService({heading, description, image_url, image_public_id, userDetails: userDetails, tags});
         return res.status(200).json({
             success: true,
             data: createPostResult

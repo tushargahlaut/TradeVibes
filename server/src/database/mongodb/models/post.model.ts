@@ -26,9 +26,12 @@ const postSchema = new Schema<IPost>(
       required: true,
       default: 0,
     },
-    author_email:{
+    author_email: {
       type: String,
-      required: true
+      required: true,
+    },
+    image_id: {
+      type: String,
     },
     likesCount: {
       type: Number,
