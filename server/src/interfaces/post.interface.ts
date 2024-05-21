@@ -15,6 +15,7 @@ export interface IPost extends Document {
   heading: string;
   slug: string;
   author_name: string;
+  author_email: string;
   description: string;
   image_url?: string; 
   comments: IComment[];

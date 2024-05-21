@@ -21,11 +21,42 @@ import { Label } from "@/components/ui/label";
 
 import { GripVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { AxiosError } from "axios";
+import { useToast } from "@/components/ui/use-toast";
+import { IPostComplete } from "./single-post";
+import ExtAxios from "@/utils/axios";
+
+
+interface EditDeletePostProps{
+  post: IPostComplete | null
+}
 
 function DeletePost() {
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+    const params = useParams();
+    const {toast} = useToast();
+    const navigate = useNavigate();
     async function deletePost(){
-        //Functionality to Delete Post
+        try {
+          const {slug} = params;
+          const deletePost = await ExtAxios.delete("/api/v1/post",{
+            params:{
+              slug
+            }
+          });
+          navigate("/posts");
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            toast({
+              variant: "destructive",
+              title:
+                "Uh oh! Something went wrong." +
+                ` (Error: ${error?.response?.status})`,
+              description: `${error.response?.data?.message}`,
+            });
+          }
+        }
     }
   return (
     <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
@@ -49,7 +80,7 @@ function DeletePost() {
   );
 }
 
-export function EditDeletePost() {
+export function EditDeletePost({post}: EditDeletePostProps) {
   return (
     <NavigationMenu>
       <NavigationMenuList>

@@ -20,6 +20,7 @@ export interface IPost {
   description: string;
   image_url: string;
   author_name: string;
+  author_email: string;
   posted_by: string;
   likesCount: number;
   commentsCount: number;

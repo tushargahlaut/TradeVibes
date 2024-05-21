@@ -136,3 +136,22 @@ export const CreatePostDAL = async (payload: any) => {
     throw new Error(error?.message);
   }
 };
+
+
+export const DeletePostDAL = async(slug: string, email: string) => {
+  try {
+    const postFind = await PostModel.findOne({
+      slug
+    });
+    if(!postFind){
+      return null;
+    }
+    if(email!==postFind.author_email){
+      throw new Error("mismatch");
+    }
+    const deletePost = await postFind.deleteOne();
+    return deletePost;
+  } catch (error: any) {
+    throw new Error(error?.message);
+  }
+}

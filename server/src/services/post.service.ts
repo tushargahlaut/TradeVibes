@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import {
     CommentPostDAL,
   CreatePostDAL,
+  DeletePostDAL,
   GetLatestPostsDAL,
   GetSinglePostDAL,
   GetTopPostsDAL,
@@ -76,6 +77,7 @@ export const CreatePostService = async (payload: any) => {
     const pheading: string = payload.heading || "test";
     const pslug = SlugifyString(pheading);
     const pauthor_name: string = payload.userDetails.name;
+    const pauthor_email: string = payload.userDetails.email;
     const decryptedString = decryptString(payload.userDetails.user_id);
     const posted_by = {
       name: payload.userDetails.name,
@@ -87,6 +89,7 @@ export const CreatePostService = async (payload: any) => {
       heading: pheading,
       description: payload.description,
       author_name: pauthor_name,
+      author_email:pauthor_email,
       slug: pslug,
       posted_by,
       image_url: pimage_url,
@@ -119,3 +122,13 @@ export const CreatePostService = async (payload: any) => {
     throw new Error(error?.message);
   }
 };
+
+export const DeletePostService = async(slug: string, email: string) =>{
+  try {
+    const deleteResult = await DeletePostDAL(slug, email);
+    return deleteResult;
+  } catch (error: any) {
+    console.log("Error in DeletePostService", error);
+    throw new Error(error?.message);
+  }
+}

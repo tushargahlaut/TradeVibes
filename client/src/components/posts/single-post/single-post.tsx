@@ -118,7 +118,7 @@ export function SinglePost() {
           <div className="flex justify-between">
             <CardTitle>{post?.heading}</CardTitle>
             <div className="flex">
-            <EditDeletePost/>
+           {email === post?.author_email && <EditDeletePost post={post} />} 
             </div>
           </div>
           <CardDescription> Posted By: {post?.author_name}</CardDescription>

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CommentPostService, CreatePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService, LikePostService } from "../services/post.service";
+import { CommentPostService, CreatePostService, DeletePostService, GetLatestPostsService, GetSinglePostService, GetTop5PostsService, LikePostService } from "../services/post.service";
 import { handleCloudinaryUpload } from "../services/cloudinary.service";
 
 export const GetTop5PostsController = async(req:Request, res:Response): Promise<Response> =>{
@@ -142,6 +142,47 @@ export const CreatePostController = async(req: Request, res: Response): Promise<
         return res.status(500).json({
             success:false,
             message:"Failed to create post, try again later"
+        });
+    }
+}
+
+
+
+export const DeletePostController = async(req:Request, res:Response): Promise<Response> =>{
+    try {
+        const slug = req.query.slug as string;
+        if(!slug){
+            return res.status(400).json({
+                success:false,
+                message:"No slug sent"
+            });
+        }
+
+        const userDetails:any = req["user"];
+        const {email} = userDetails["payload"];
+
+        const deleteService = await DeletePostService(slug, email);
+
+        if(deleteService==null){
+            return res.status(400).json({
+                success:false,
+                message:"No slug sent"
+            });
+        }
+
+        return res.status(200).json({
+            success: true
+        });
+    } catch (error: any) {
+        if(error?.message=="mismatch"){
+            return res.status(403).json({
+                success:false,
+                message:"Unauthorized User"
+            });
+        }
+        return res.status(500).json({
+            success:false,
+            message:"Failed to delete post, try again later"
         });
     }
 }
