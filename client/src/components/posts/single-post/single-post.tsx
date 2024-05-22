@@ -17,6 +17,7 @@ import { useUserStore } from "@/store/user.store";
 import { useTheme } from "../../common/theme-provider";
 import { Comments } from "./comments";
 import { EditDeletePost } from "./edit-delete";
+import { ConvertTime } from "@/utils/time-convert";
 
 interface Like {
   made_by: string;
@@ -121,7 +122,7 @@ export function SinglePost() {
            {email === post?.author_email && <EditDeletePost post={post} />} 
             </div>
           </div>
-          <CardDescription> Posted By: {post?.author_name}</CardDescription>
+          <CardDescription> Posted By: {post?.author_name} •  {post?.createdAt && ConvertTime(post?.createdAt)}</CardDescription>
         </CardHeader>
         <CardContent>
           <CardDescription>{post?.description}</CardDescription>

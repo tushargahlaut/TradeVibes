@@ -45,7 +45,7 @@ export const GetSinglePostDAL = async (slug: string) => {
   try {
     const result = await PostModel.findOne({
       slug,
-    });
+    }).select("-_id -image_id");
     if (!result) {
       return null;
     }
@@ -120,7 +120,7 @@ export const GetLatestPostsDAL = async (
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .select("-_id -__v -comments -likes");
+      .select("-_id -__v -comments -image_id -likes");
     return getLatestPosts;
   } catch (error: any) {
     console.log("Error in GetTopPostsDAL", error);

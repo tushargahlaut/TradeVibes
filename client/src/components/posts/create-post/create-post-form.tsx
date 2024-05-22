@@ -76,7 +76,7 @@ export function CreatePostForm({setOpen}: CreatePostFormProps) {
       formData.append("heading", values.heading);
       formData.append("description", values.description);
       formData.append("image", values.image);
-      const submitPost = await ExtAxios.post("api/v1/post", formData, {
+      await ExtAxios.post("api/v1/post", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -149,6 +149,24 @@ export const CreatePostController = async(req: Request, res: Response): Promise<
 
 
 
+export const UpdatePostController = async(req:Request, res:Response): Promise<Response> =>{
+    try {
+        return res.status(200).json({
+            success: true,
+            message:"Updated Post Successfully"
+        })
+    } catch (error) {
+        return res.status(500).json(
+            {
+                success:false,
+                message:"Failed to Update Post, Try Again Later"
+            }
+        )
+    }
+}
+
+
+
 export const DeletePostController = async(req:Request, res:Response): Promise<Response> =>{
     try {
         const slug = req.query.slug as string;
